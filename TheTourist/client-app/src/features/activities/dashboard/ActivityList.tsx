@@ -14,9 +14,10 @@ interface Activity {
 interface Props {
   activities: Activity[];
   selectActivity: (id: string) => void;
+  deleteActivity: (id: string) => void;
 }
 
-const ActivityList: React.FC<Props> = ({ activities, selectActivity }) => {
+const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActivity }) => {
   return (
     <Segment>
       <Item.Group divided>
@@ -39,6 +40,12 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity }) => {
                   floated="right"
                   content="View"
                   color="blue"
+                />
+                <Button
+                  onClick={() => deleteActivity(activity.id)}
+                  floated="right"
+                  content="Delete"
+                  color="red"
                 />
                 <Label basic content={activity.category} />{" "}
                 {/* 'Label' instead of 'Lable' */}
