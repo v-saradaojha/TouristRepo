@@ -1,24 +1,11 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Segment, Item, Button, Label } from "semantic-ui-react";
+import { useStore } from "../../../app/stores/store";
+import { observer } from "mobx-react-lite";
 
-interface Activity {
-  id: string;
-  title: string;
-  date: string;
-  description: string;
-  city: string;
-  venue: string;
-  category: string;
-}
-
-interface Props {
-  activities: Activity[];
-  selectActivity: (id: string) => void;
-  deleteActivity: (id: string) => void;
-  submitting: boolean;
-}
-
-const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActivity, submitting }) => {
+const ActivityList: React.FC = () => {
+  const { activityStore } = useStore();
+  const {deleteActivity,activiteiesByDate,loading}=activityStore;
   const [target, setTatget] = useState('');
   function handleActivityDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
     setTatget(e.currentTarget.name);
@@ -28,7 +15,7 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActiv
   return (
     <Segment>
       <Item.Group divided>
-        {activities.map((activity) => (
+        {activiteiesByDate.map((activity) => (
           <Item key={activity.id}>
             {" "}
             { }
@@ -43,7 +30,7 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActiv
               </Item.Description>
               <Item.Extra>
                 <Button
-                  onClick={() => selectActivity(activity.id)}
+                  onClick={() => activityStore.selectActivity(activity.id)}
                   floated="right"
                   content="View"
                   color="blue"
@@ -51,7 +38,7 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActiv
                 <Button
                   onClick={(e) => handleActivityDelete(e, activity.id)}
                   name={activity.id}
-                  loading={submitting && target === activity.id}
+                  loading={loading && target === activity.id}
                   floated="right"
                   content="Delete"
                   color="red"
@@ -66,4 +53,4 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActiv
   );
 };
 
-export default ActivityList;
+export default observer(ActivityList);
