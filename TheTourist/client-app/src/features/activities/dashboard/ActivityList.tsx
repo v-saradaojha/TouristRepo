@@ -1,4 +1,4 @@
-import React from "react";
+import React, { SyntheticEvent, useState } from "react";
 import { Segment, Item, Button, Label } from "semantic-ui-react";
 
 interface Activity {
@@ -15,16 +15,23 @@ interface Props {
   activities: Activity[];
   selectActivity: (id: string) => void;
   deleteActivity: (id: string) => void;
+  submitting: boolean;
 }
 
-const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActivity }) => {
+const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActivity, submitting }) => {
+  const [target, setTatget] = useState('');
+  function handleActivityDelete(e: SyntheticEvent<HTMLButtonElement>, id: string) {
+    setTatget(e.currentTarget.name);
+    deleteActivity(id);
+  }
+
   return (
     <Segment>
       <Item.Group divided>
         {activities.map((activity) => (
           <Item key={activity.id}>
             {" "}
-            {/* 'key' should be specified on 'Item' component */}
+            { }
             <Item.Content>
               <Item.Header as="a">{activity.title}</Item.Header>
               <Item.Meta>{activity.date}</Item.Meta>
@@ -42,13 +49,14 @@ const ActivityList: React.FC<Props> = ({ activities, selectActivity, deleteActiv
                   color="blue"
                 />
                 <Button
-                  onClick={() => deleteActivity(activity.id)}
+                  onClick={(e) => handleActivityDelete(e, activity.id)}
+                  name={activity.id}
+                  loading={submitting && target === activity.id}
                   floated="right"
                   content="Delete"
                   color="red"
                 />
                 <Label basic content={activity.category} />{" "}
-                {/* 'Label' instead of 'Lable' */}
               </Item.Extra>
             </Item.Content>
           </Item>

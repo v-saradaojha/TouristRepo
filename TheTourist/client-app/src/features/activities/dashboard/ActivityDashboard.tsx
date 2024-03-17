@@ -10,11 +10,12 @@ interface Props {
     selectedActivity: Activity | undefined;
     selectActivity: (id: string) => void;
     cancelSelectActivity: () => void;
-    editMode: boolean; // Include editMode in Props interface
+    editMode: boolean;
     openForm: (id: string) => void;
     closeForm: () => void;
     createOrEdit: (activity: Activity) => void;
     deleteActivity: (id: string) => void;
+    submitting: boolean; // Corrected prop name
 }
 
 const ActivityDashboard: React.FC<Props> = ({
@@ -22,11 +23,12 @@ const ActivityDashboard: React.FC<Props> = ({
     selectedActivity,
     selectActivity,
     cancelSelectActivity,
-    editMode, // Include editMode in destructuring
+    editMode,
     openForm,
     closeForm,
     createOrEdit,
-    deleteActivity
+    deleteActivity,
+    submitting
 }) => {
     return (
         <Grid>
@@ -35,6 +37,7 @@ const ActivityDashboard: React.FC<Props> = ({
                     activities={activities}
                     selectActivity={selectActivity}
                     deleteActivity={deleteActivity}
+                    submitting={submitting}
                 />
             </Grid.Column>
             <Grid.Column width={6}>
@@ -45,8 +48,8 @@ const ActivityDashboard: React.FC<Props> = ({
                         openForm={openForm}
                     />
                 )}
-                {editMode && ( // Wrap ActivityForm in parentheses
-                    <ActivityForm closeForm={closeForm} activity={selectedActivity} createOrEdit={createOrEdit} />
+                {editMode && (
+                    <ActivityForm closeForm={closeForm} activity={selectedActivity} createOrEdit={createOrEdit} submitting={submitting} /> 
                 )}
             </Grid.Column>
         </Grid>

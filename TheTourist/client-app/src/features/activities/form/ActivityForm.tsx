@@ -6,9 +6,10 @@ interface Props {
   activity?: Activity;
   closeForm: () => void;
   createOrEdit:(activity:Activity)=>void;
+  submitting:boolean;
 }
 
-const ActivityForm: React.FC<Props> = ({ activity: selectedActivity, closeForm ,createOrEdit}) => {
+const ActivityForm: React.FC<Props> = ({ activity: selectedActivity, closeForm ,createOrEdit,submitting}) => {
   const initialState = selectedActivity ?? {
     id: '',
     title: '',
@@ -52,6 +53,7 @@ const ActivityForm: React.FC<Props> = ({ activity: selectedActivity, closeForm ,
           onChange={handleInputChange}
         />
         <Form.Input
+          type="date"
           name="date"
           placeholder="Date"
           value={activity.date}
@@ -75,7 +77,7 @@ const ActivityForm: React.FC<Props> = ({ activity: selectedActivity, closeForm ,
           content="Cancel"
           onClick={closeForm}
         />
-        <Button floated="right" positive type="submit" content="Submit" />
+        <Button loading={submitting} floated="right" positive type="submit" content="Submit" />
       </Form>
     </Segment>
   );
