@@ -14,7 +14,7 @@ namespace API.Controllers
         {
             var result = await Mediator.Send(new List.Query());
             return HandleRequest(result);
-        }
+        }        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivity(Guid id)
         {

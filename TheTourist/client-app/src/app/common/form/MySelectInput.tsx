@@ -1,4 +1,4 @@
-import { Field, Form, useField } from "formik";
+import { Field, useField } from "formik";
 import { Label, Select } from "semantic-ui-react";
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
     label?: string;
 }
 
-export default function MySelectInput(props: Props) {
+export default function MySelectInput(props: Readonly<Props>) {
     const [, meta, helpers] = useField(props.name);
     return (
-        <Form>
-            <label htmlFor={props.name}>{props.label}</label>
+        <div>
+           
             <Field name={props.name}>
                 {({ field }: { field: { value: string } }) => (
                     <Select
@@ -34,6 +34,6 @@ export default function MySelectInput(props: Props) {
                     {meta.error}
                 </Label>
             )}
-        </Form>
+        </div>
     );
 }

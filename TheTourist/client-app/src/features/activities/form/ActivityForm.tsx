@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Segment, Button, Header } from "semantic-ui-react";
+import { Segment, Button, Header, Form, Grid } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import { Link,useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Activity } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Formik, Form } from "formik";
+import { Formik } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
 import MyTextArea from "../../../app/common/form/MyTextArea";
@@ -16,9 +16,9 @@ import { v4 as uuid } from 'uuid';
 
 const ActivityForm: React.FC = () => {
   const { activityStore } = useStore();
-  const { loading, loadActivity, loadingInitial,createActivity,updateActivity } = activityStore;
+  const { loading, loadActivity, loadingInitial, createActivity, updateActivity } = activityStore;
   const { id } = useParams();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [activity, setActivity] = useState<Activity | undefined>({
     id: "",
     title: "",
@@ -44,7 +44,7 @@ const ActivityForm: React.FC = () => {
   function handleFormSubmit(activity: Activity) {
     if (activity.id.length === 0) {
       const newActivity = { ...activity, id: uuid() };
-      createActivity(newActivity!).then(() => navigate(`/activities/${activity?.id}`))
+      createActivity(newActivity).then(() => navigate(`/activities/${activity?.id}`))
     }
     else {
       updateActivity(activity).then(() => navigate(`/activities/${activity?.id}`))
@@ -64,28 +64,61 @@ const ActivityForm: React.FC = () => {
       >
         {({ handleSubmit, isValid, isSubmitting, dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            <MyTextInput name='title' placeholder="Title" />
-            <MyTextArea rows={3} name="description" placeholder="Description" />
-            <MySelectInput options={categoryOptions} name="category" placeholder="Category" />
-            <MyDateInput name="date" placeholderText="date" showTimeSelect timeCaption="time" dateFormat='MMMM d, yyyy h:mm aa' />
-            <Header content='Location Details' sub color='teal' />
-            <MyTextInput name="city" placeholder="City" />
-            <MyTextInput name="venue" placeholder="Venue" />
-            <Button
-              as={Link}
-              to="/activities"
-              floated="right"
-              type="button"
-              content="Cancel"
-            />
-            <Button
-              disabled={isSubmitting || !dirty || !isValid}
-              loading={loading}
-              floated="right"
-              positive
-              type="submit"
-              content="Submit"
-            />
+            <Grid>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <MyTextInput name='title' placeholder="Title" />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <MyTextArea rows={3} name="description" placeholder="Description" />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <MySelectInput options={categoryOptions} name="category" placeholder="Category" />
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <MyDateInput name="date" placeholderText="Date" showTimeSelect timeCaption="Time" dateFormat='MMMM d, yyyy h:mm aa' />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Header content='Location Details' sub color='teal' />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <MyTextInput name="city" placeholder="City" />
+                </Grid.Column>
+                <Grid.Column width={8}>
+                  <MyTextInput name="venue" placeholder="Venue" />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Button.Group fluid>
+                    <Button
+                      as={Link}
+                      to="/activities"
+                      type="button"
+                      content="Cancel"
+                      color="grey"
+                      
+                    />
+                    <Button.Or />
+                    <Button
+                      disabled={isSubmitting || !dirty || !isValid}
+                      loading={loading}
+                      positive
+                      type="submit"
+                      content="Submit"
+                    />
+                  </Button.Group>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
           </Form>
         )}
       </Formik>

@@ -1,4 +1,4 @@
-import { Field, Form, useField } from "formik";
+import { Field, useField } from "formik";
 import { Label, TextArea } from "semantic-ui-react";
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
     label?: string;
 }
 
-export default function MyTextArea(props: Props) {
+export default function MyTextArea(props: Readonly<Props>) {
     const [, meta] = useField(props.name);
     return (
-        <Form>
-            <label htmlFor={props.name}>{props.label}</label>
+       <div>
+        
             <Field name={props.name}>
                 {({ field }: { field: Props }) => (
                     <TextArea
@@ -27,6 +27,6 @@ export default function MyTextArea(props: Props) {
             {meta.touched && meta.error && (
                 <Label basic color='red'>{meta.error}</Label>
             )}
-        </Form>
+        </div>
     );
 }
